@@ -16,6 +16,11 @@ type Pet {
     name: String! 
     species: String!
 }
+type Roll {
+    total: Int 
+    side: Int 
+    rolls: [Int]
+}
 type Song {
     title: String! 
     artist: String!
@@ -36,7 +41,7 @@ type Query {
     firstSong: Song
     lastSong: Song
     getTime: Time
-    getRandom(range: Int): Int
+    getRoll: [Roll!]!
 }
 `)
 
@@ -77,9 +82,11 @@ const root = {
                         let second = today.getSeconds()
                         return {hour, minute, second}
                     },
-                        getRandom( {range }) {
-                            // return random number between 1 & 100
+                        getRoll: ({ sides, rolls }) => {
+                            // total = sum(rolls)
+                            return {total, sides, rolls}
                         }
+                        
 }
 
 app.use('/graphql', graphqlHTTP({
